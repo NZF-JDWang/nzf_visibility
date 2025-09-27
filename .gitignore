@@ -1,0 +1,39 @@
+# Arma 3 Mod Development
+*.pbo
+*.bisign
+*.bikey
+*.biprivatekey
+
+# Build artifacts
+@nzf_visibility/
+addons/
+keys/
+*.log
+
+# IDE and Editor files
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.sublime-*
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.backup
+
+# Arma 3 specific
+*.rpt
+*.md5
+*.md5sum
