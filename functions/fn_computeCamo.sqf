@@ -1,5 +1,5 @@
 // Compute target camouflageCoef (lower is better)
-params ["_stance", "_moveCat", "_surface", "_timeLight", "_fog", "_overcast", "_rain", "_cover", "_denseBush"];
+params ["_stance", "_moveCat", "_surface", "_timeLight", "_fog", "_overcast", "_rain", "_cover", "_denseBush", "_forestDensity"];
 
 private _base = 1.0;
 
@@ -13,6 +13,9 @@ if (_gh == _ghHeavy) then { _ghBonus = 0.45; };
 
 // Cover reduces visibility; very dense bush grants extra reduction
 _base = _base - (0.35 * _cover) - _ghBonus - (0.30 * _denseBush);
+
+// Forest/Jungle environment bonus - significant reduction in dense forests
+_base = _base - (0.40 * _forestDensity);
 
 
 // Light level: at night _timeLight ~ 0

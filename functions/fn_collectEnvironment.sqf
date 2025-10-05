@@ -15,8 +15,11 @@ private _near = nearestTerrainObjects [_pos, ["BUSH","TREE","SMALL TREE"], 8, tr
 private _cover = (count _near) min 12; // cap count
 _cover = _cover / 12; // normalize 0..1
 
+// Forest/Jungle density - larger area check for overall environment
+private _forestObjects = nearestTerrainObjects [_pos, ["TREE","SMALL TREE"], 25, true];
+private _forestDensity = ((count _forestObjects) min 30) / 30; // normalize 0..1 for dense forest
 
-// Dense bush metric
+// Dense bush metric (immediate vicinity)
 private _density = 0;
 {
 	private _d = _u distance _x;
@@ -41,5 +44,5 @@ if (_speed > 1.5) then { _moveCat = 1; };
 if (_speed > 6) then { _moveCat = 2; };
 if (_speed > 8.5) then { _moveCat = 3; };
 
-[_stance, _moveCat, _surface, _timeLight, _fog, _overcast, _rain, _cover, _denseBush]
+[_stance, _moveCat, _surface, _timeLight, _fog, _overcast, _rain, _cover, _denseBush, _forestDensity]
 

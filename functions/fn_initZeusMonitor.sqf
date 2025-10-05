@@ -62,7 +62,6 @@ private _zeusKey = [
 				(findDisplay 312) displayAddEventHandler ["keyDown", {    
 					if (inputAction "user12" > 0) then {
 						if(nzf_showPlayerStats) then {nzf_showPlayerStats=false} else {nzf_showPlayerStats = true};
-						hint format ["Player Stats Display | %1 ",nzf_showPlayerStats];
 					}; 
 				}];
 			};
@@ -78,7 +77,6 @@ private _zeusKey = [
 (findDisplay 46) displayAddEventHandler ["keyDown", {    
 	if (inputAction "user12" > 0) then {
 		if(nzf_showPlayerStats) then {nzf_showPlayerStats=false} else {nzf_showPlayerStats = true};
-		hint format ["Player Stats Display | %1 ",nzf_showPlayerStats];
 	}; 
 }];
 
@@ -100,24 +98,24 @@ addMissionEventHandler ["Draw3D", {
 		
 		// Get player data
 		private _playerFPS = _x getVariable ["nzf_PlayerFPS", 50];
-		private _playerCamo = _x getVariable ["nzf_PlayerCamo", 1.0];
-		private _playerAudio = _x getVariable ["nzf_PlayerAudio", 1.0];
+		private _playerCamo = _x getUnitTrait "camouflageCoef";
+		private _playerAudio = _x getUnitTrait "audibleCoef";
 		
 		// Determine colors and sizes based on FPS
 		private _isLowFPS = _playerFPS < 20;
-		private _fpsColor = if (_isLowFPS) then { [1,0,0,0.7] } else { [1,1,1,0.5] };
+		private _fpsColor = if (_isLowFPS) then { [1,0,0,0.8] } else { [1,1,1,0.7] };
 		private _fpsSize = if (_isLowFPS) then { 0.05 } else { 0.03 };
-		private _coefSize = if (_isLowFPS) then { 0.04 } else { 0.025 };
-		private _coefColor = if (_isLowFPS) then { [1,0,0,0.7] } else { [1,1,1,0.5] };
+		private _coefSize = if (_isLowFPS) then { 0.05 } else { 0.035 }; // Slightly larger than FPS
+		private _coefColor = if (_isLowFPS) then { [1,0,0,0.8] } else { [1,1,1,0.7] };
 		
-		// FPS line
+		// FPS line (top)
 		drawIcon3D
 		[
 			"",
 			_fpsColor,
 			ASLToAGL getPosASL _x,
 			1,
-			2,
+			2.0,
 			0,
 			format["%1 FPS: %2", name _x, str _playerFPS],
 			0,
@@ -126,37 +124,20 @@ addMissionEventHandler ["Draw3D", {
 			"center"
 		];
 		
-		// Audio and Camo coefficients line
-		if (_visibilityEnabled) then {
-			drawIcon3D
-			[
-				"",
-				_coefColor,
-				ASLToAGL getPosASL _x,
-				1,
-				1.5,
-				0,
-				format["A: %1 | V: %2", (_playerAudio toFixed 2), (_playerCamo toFixed 2)],
-				0,
-				_coefSize,
-				"PuristaMedium",
-				"center"
-			];
-		} else {
-			drawIcon3D
-			[
-				"",
-				[1,1,1,if (_isLowFPS) then { 0.5 } else { 0.3 }],
-				ASLToAGL getPosASL _x,
-				1,
-				1.5,
-				0,
-				"Visibility System Disabled",
-				0,
-				_coefSize,
-				"PuristaMedium",
-				"center"
-			];
-		};
+		// Audio and Camo coefficients line (below FPS)
+		drawIcon3D
+		[
+			"",
+			_coefColor,
+			ASLToAGL getPosASL _x,
+			1,
+			3.0,
+			0,
+			format["A: %1 | V: %2", (_playerAudio toFixed 2), (_playerCamo toFixed 2)],
+			0,
+			_coefSize,
+			"PuristaMedium",
+			"center"
+		];
 	} forEach allPlayers;
 }];
