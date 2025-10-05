@@ -8,6 +8,7 @@ if (_key != -1) then {
 	[_key] call CBA_fnc_removePerFrameHandler;
 };
 
+
 _key = [
 	{
 		// Only run while player alive and has interface
@@ -15,16 +16,25 @@ _key = [
 			[_thisId] call CBA_fnc_removePerFrameHandler;
 		};
 
-		private _env = call nzf_visibility_fnc_collectEnvironment;
-		private _camo = _env call nzf_visibility_fnc_computeCamo;
-		private _audio = _env call nzf_visibility_fnc_computeAudio;
+		// Check if visibility system is enabled
+		if (nzfVisibilityEnabled) then {
+			private _env = call nzf_visibility_fnc_collectEnvironment;
+			private _camo = _env call nzf_visibility_fnc_computeCamo;
+			private _audio = _env call nzf_visibility_fnc_computeAudio;
 
-		[_camo, _audio] call nzf_visibility_fnc_applyTraits;
-
-		// draw handled by Draw3D EH when debug is on
+			[_camo, _audio] call nzf_visibility_fnc_applyTraits;
+		};
 	},
 	_tick
 ] call CBA_fnc_addPerFrameHandler;
 
-player setVariable ["nzfVisibilityPfhKey", _key, false];
+// Only set the variable if _key is valid (not nil or -1)
+if (!isNil "_key" && _key != -1) then {
+	player setVariable ["nzfVisibilityPfhKey", _key, false];
+} else {
+	diag_log "NZF Visibility: Failed to create per-frame handler";
+};
+
+// Log that the visibility loop is active
+diag_log "NZF Visibility: Player visibility monitoring loop started";
 

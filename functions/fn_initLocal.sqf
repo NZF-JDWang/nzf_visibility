@@ -1,8 +1,6 @@
 // Initialize local visibility system
 if (!hasInterface) exitWith {};
 
-if (nzfVisibilityDebug) then { systemChat "NZF Visibility: Player found, initializing..."; };
-
 // Initialize local state container with current traits
 private _cInit = player getUnitTrait "camouflageCoef";
 private _aInit = player getUnitTrait "audibleCoef";
@@ -11,9 +9,7 @@ if (isNil "_aInit") then { _aInit = 1; };
 player setVariable ["nzfVisibilityState", [_cInit, _aInit, 0, 0], false]; // [lastCamo, lastAudio, camoShotBoost, audioShotBoost]
 
 // Hook FiredMan locally
-if (nzfVisibilityDebug) then { systemChat "NZF Visibility: Adding FiredMan event handler..."; };
 player addEventHandler ["FiredMan", {
-	if (nzfVisibilityDebug) then { systemChat "FiredMan event triggered!"; };
 	params ["_unit", "_weapon", "_muzzle", "_mode", "_ammo", "_mag", "_projectile", "_vehicle"];
 	[_unit, _weapon, _muzzle, _ammo] call nzf_visibility_fnc_onFired;
 }];
@@ -34,8 +30,7 @@ player setVariable ["nzfVisibilityState", [_c0, _a0, 0, 0], false];
 	[] call nzf_visibility_fnc_onRespawn;
 }] call CBA_fnc_addPlayerEventHandler;
 
-// Ensure Draw3D handler state matches debug setting
-[] call nzf_visibility_fnc_updateDebugEh;
+// Debug system removed - using integrated zeus monitor instead
 
 // Fallback: ensure PFH is running after a short delay
 [{ (missionNamespace getVariable ["nzfVisibilityPfhKey", -1]) != -1 }, {
@@ -43,4 +38,7 @@ player setVariable ["nzfVisibilityState", [_c0, _a0, 0, 0], false];
 }, {
 	[] call nzf_visibility_fnc_startLocalLoop;
 }] call CBA_fnc_waitUntilAndExecute;
+
+// Log system initialization
+diag_log "NZF Visibility: Player visibility system initialized and running";
 

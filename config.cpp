@@ -19,20 +19,19 @@ class CfgFunctions
 		class main
 		{
 			file = "\nzf_visibility\functions";
-			class startLocalLoop {};
-			class collectEnvironment {};
-			class computeCamo {};
-			class computeAudio {};
-			class applyTraits {};
-			class debugRender {};
-			class updateDebugEh {};
-			class onDraw3D {};
-			class onFired {};
-			class registerDebugClient {};
-			class unregisterDebugClient {};
-			class initLocal { postInit = 1; };
-		};
+		class startLocalLoop {};
+		class collectEnvironment {};
+		class computeCamo {};
+		class computeAudio {};
+		class applyTraits {};
+		class onFired {};
+		class initLocal { postInit = 1; };
+		class initZeusMonitor { postInit = 1; };
+		class adjustGroupSpotting {};
+		class startAIGroupManagement {};
+		class manageAIGroupLeaders {};
 	};
+};
 };
 
 class Extended_PreInit_EventHandlers

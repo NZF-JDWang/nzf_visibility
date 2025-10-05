@@ -5,9 +5,8 @@ if (_unit != player) exitWith {};
 // Rate limit firing spikes to 5 seconds
 private _lastShot = _unit getVariable ["nzfVisibilityLastShot", 0];
 private _currentTime = time;
-if (_currentTime - _lastShot < 5) exitWith { systemChat "Firing spike rate limited (5s cooldown)"; };
+if (_currentTime - _lastShot < 5) exitWith {};
 _unit setVariable ["nzfVisibilityLastShot", _currentTime, false];
-systemChat "Firing spike triggered!";
 
 private _state = _unit getVariable ["nzfVisibilityState", [1,1,0,0]];
 _state params ["_lastC", "_lastA", "_cShot", "_aShot"];
@@ -37,7 +36,4 @@ _aShot = _aShot + _aAdd;
 
 _unit setVariable ["nzfVisibilityState", [_lastC, _lastA, _cShot, _aShot], false];
 
-// Debug output
-systemChat format ["Shot spikes: Camo +%1, Audio +%2", _cAdd, _aAdd];
-systemChat format ["New state: [%1, %2, %3, %4]", _lastC, _lastA, _cShot, _aShot];
 
